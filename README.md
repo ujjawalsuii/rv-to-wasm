@@ -47,8 +47,14 @@ RISC-V uses arbitrary jumps (`j`, `bne`), whereas WASM uses structured control f
 
 ---
 
-### 🚀 Usage
+Translate a RISC-V assembly file:
+./riscv2wasm input.s -o output.wasm
 
-Compile the translator:
-```bash
-make
+⚖️ Credits & Academic Context
+This project was developed as part of the CMPUT 229: Computer Organization & Architecture coursework at the University of Alberta.
+
+Base Framework: The initial skeleton code (file parsing, basic structs) was provided by the Course Staff (Prof. J. Nelson / Prof. A. Hindle).
+
+Implementation: The core translation logic—including the LEB128 encoding, Stack-Register mapping, and Control Flow Analysis algorithms—was implemented by Ujjawal Pratap Singh.
+
+<div align="center"> <b>Engineered by Ujjawal Pratap Singh</b> </div>
