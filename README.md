@@ -53,7 +53,7 @@ Translate a RISC-V assembly file:
 ⚖️ Credits & Academic Context
 This project was developed as part of the CMPUT 229: Computer Organization & Architecture coursework at the University of Alberta.
 
-Base Framework: The initial skeleton code (file parsing, basic structs) was provided by the Course Staff (Prof. J. Nelson / Prof. A. Hindle).
+Base Framework: The initial skeleton code (file parsing, basic structs) was provided by the Course Staff (Prof. J. Nelson / Prof. Rob. Hackman).
 
 Implementation: The core translation logic—including the LEB128 encoding, Stack-Register mapping, and Control Flow Analysis algorithms—was implemented by Ujjawal Pratap Singh.
 
