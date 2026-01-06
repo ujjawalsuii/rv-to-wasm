@@ -1,0 +1,51 @@
+###############################
+#RUNNING PROVIDED RISC-V PROGRAM EXAMPLES
+###############################
+
+You have been provided with two sample RISC-V programs as well as the Webassembly module equivalents. Each RISC-V program has been split into two files, one with the exact function that has been translated to Webassembly (the exponent.s and lazycaterer.s files) as well as a file (the exponentMain.s and lazycatererMain.s files) that contains a main label that provide arguments to and call the subroutine.
+
+To run the RISC-V programs using RARS, for example on the exponent.s file(s), use:
+
+   ./run.sh exponent.s exponentMain.s X Y
+
+Where X and Y are the input that the exponentMain.s file passes as arguments to the exponent subroutine defined in the exponent.s file.
+
+See the comments on the top of each RISC-V file to verify how many arguments each will expect.
+
+###############################
+#RUNNING THE WASM MODULE
+###############################
+This step is NOT required for this assignment, however it can be used to verify the correctness of semantics of translated WASM programs.
+
+	- Any module provided to this program must contain a main function in order to execute in the browser, however any module created with the common.s file will have this function naming done for you. The function you provide in the RISC-V program will be renamed to main in the WASM module. 
+	-Make sure to only run your assignment submission on one RISC-V subroutine placed in one file at any time in order to generate the .wasm files.
+
+
+
+To run a .wasm module:
+
+1. Launch browserWASM.html in a browser (double-click on the file).
+
+2. Click the “Choose File” button to use a file selector to find the file to load. 
+
+3. Click the “Load Module” button. 
+
+You will either see a green success alert, or a red error alert.
+Any file chosen that does not end in the .wasm extension will cause an error. .wasm files that are invalid will also cause errors.
+
+In the event of an error, repeat steps 2 and 3.
+
+4. Click the “Add Input Argument” button to add a textbox to type values into.
+
+Repeat set 4 as many times as necessary.
+You will need to know how many arguments this module takes in order to perform its functionality as expected. A maximum of 4 input arguments can be used at any time. 
+
+At any point you may click the “Remove Input Argument” button to remove the most recently added text box. 
+
+An argument that is removed will be reset to have a value of 0. Any arguments that are not supplied within textbooks will have a value of 0.
+
+5. Once a appropriate values are added to the appropriate number of textboxes for the particular module click the “Run Module” button.
+
+The result will appear to the right of the “Result:” text.
+
+The module can be run any number of times and arguments can be added/removed/changed at any time.

@@ -1,0 +1,141 @@
+<!Adapted from: miklund 2016-06-19 Creating a WebAssembly binary and running it in a browser
+https://gist.github.com/miklund/79c1f3eb129ea5689c03c41d17922c14
+Accessed July 17 2017
+Modifying Author: Kristen Newbury
+Date: July 17 2017
+>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="styleBrowserWASM.css" />
+    <script>
+    var myModule;
+    var result;
+    var fileStatus;
+    function loadModule() {
+        // read binary file
+        var wasmFile = document.getElementById("wasmBinary").files[0];
+        fileStatus = document.getElementById("filestatus");
+     
+        // create a reader object
+        var reader = new FileReader();
+        // on success
+        reader.onload = function (e) {
+            // save the result ArrayBuffer
+            var wasmBinary = e.target.result;
+            // display success in the console
+            console.log('Successfully read file %d bytes', wasmBinary.byteLength);
+            fileStatus.className = "alertSuccess";
+            fileStatus.innerHTML = "Module Loaded";
+            // init the module
+            WebAssembly.instantiate(wasmBinary).then(function(instance) {
+    //gather the result of a successful promise return
+    myModule = instance;
+    document.getElementById("add").className = "";
+  }).catch(function(e){
+    //module load error
+    console.log("Error", e);
+     fileStatus.className = "alertError";
+     fileStatus.innerHTML ="Try again. <br>An error reading the file occured:<br> " +  e.toString();
+     document.getElementById("add").className = "hidden";
+     return false;
+});
+
+        };
+        // on file read error
+        reader.onerror = function (e) {
+            // display error in the console
+            console.error('An error reading the file occured');
+            fileStatus.className = "alertError";
+            fileStatus.innerHTML = 'An error reading the file occured' + e.toString();
+            return false;
+        };
+        // read the whole file into an ArrayBuffer
+        reader.readAsArrayBuffer(wasmFile);
+        // do not refresh the page
+        return false;
+
+    }
+    function runModule() {
+        var addPlaceholder = document.getElementById("args");
+        var children = addPlaceholder.children;
+        if (children.length === 0 ){
+            result = myModule.instance.exports.main();
+        }
+        else if (children.length === 1 ){
+            result = myModule.instance.exports.main(children[0].value);
+        }
+        else if (children.length === 2 ){
+            result = myModule.instance.exports.main(children[0].value, children[1].value);
+        }
+        else if (children.length === 3 ){
+            result = myModule.instance.exports.main(children[0].value, children[1].value, children[2].value);
+        }
+        else if (children.length === 4 ){
+            result = myModule.instance.exports.main(children[0].value, children[1].value, children[2].value, children[3].value);
+        } 
+     
+        // display the result
+        document.getElementById("result").innerText = "Result: " + result.toString();
+        
+    }
+
+    function addArgument(){
+        var addPlaceholder = document.getElementById("args");
+        if (addPlaceholder.children.length < 4 ){
+            var newInput = document.createElement("input");
+            newInput.className = "argAdditionIndiv";
+            addPlaceholder.appendChild(newInput);
+        }
+    }
+
+    function removeArgument(){
+        document.getElementById("args").removeChild(document.getElementById("args").lastChild);
+    }
+
+    </script>
+</head>
+<body>
+<div class="grad1"><div class="welcome">WELCOME TO 229 WASM MODULE LOADER</div></div>
+<div class="body">
+
+    <div class="viewDemo"  onclick="document.getElementById('demo').style.display='block';" >View Demo</div>
+    <div id="demo" class="popupcontent"><video width="800" height="500" src="demo.mp4" controls></video><button class="closeButton" onclick="document.getElementById('demo').style.display='none';">X</button></div>
+    
+    <h1>Upload a WebAssembly module</h1>
+    <p>To get started choose a Webassembly module (.wasm extension) file to load.</p>
+
+<div class="loadFile">
+<label for="wasmBinary" >
+   <input class="right" type="file"  id="wasmBinary" name="wasmBinary"  />
+</label>
+    
+    <input type="submit" class="button" value="Load module" onclick="loadModule()" />
+</div>
+
+    <div id="filestatus" ></div>
+
+<div id="add" class="hidden" style="display:hidden">
+<p >Provide arguments to the module.</p>
+        <div class="argAddition">
+             
+            <input type="submit" class="left button" value="Add input argument" onclick="addArgument()"  />
+             <input type="submit"  class="rightInput button" value="Remove input argument" onclick="removeArgument()"  />
+            <div id="args">
+            </div>
+        </div>
+
+<p style="margin-top: 2rem;">
+Run the module to produce its output.
+</p>
+  <div class="result">
+    
+        <input type="submit" class="left button" value="Run module" onclick="runModule()" />
+        <span id="result">Result: </span>
+    </div>
+
+
+</div>
+</div>
+</body>
+</html>
